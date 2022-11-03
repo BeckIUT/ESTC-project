@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "nrf_delay.h"
+#include "nrf_gpio.h"
 #include "boards.h"
 
 #define DEVICE_ID 27 // inverted DEVICE ID for ease of implementation, actual ID 7200
@@ -9,11 +10,11 @@
 
 void blinkLEDs()
 {
-    uint32_t ID = DEVICE_ID;
+    uint32_t id = DEVICE_ID;
     for(uint32_t led_count = 0; led_count < LED_NUMBER; led_count++)
     {
-        uint32_t blink_count = ID%10;
-        ID /= 10;
+        uint32_t blink_count = id%10;
+        id /= 10;
         
         if(blink_count == 0) { // no blink
             nrf_delay_ms(PAUSE_MS);
@@ -42,10 +43,5 @@ int main(void)
     while (true)
     {
         blinkLEDs();
-        // for (int i = 0; i < LEDS_NUMBER; i++)
-        // {
-        //     bsp_board_led_invert(i);
-        //     nrf_delay_ms(500);
-        // }
     }
 }
