@@ -1,43 +1,52 @@
 #include <stdbool.h>
 #include <stdint.h>
-#include "nrf_delay.h"
-#include "nrf_gpio.h"
-#include "boards.h"
+#include "src/gpio/led_gpio.h"
+#include "src/utils/delay.h"
 
-#define DEVICE_ID 27 // inverted DEVICE ID for ease of implementation, actual ID 7200
-#define PAUSE_MS 200
-#define LED_NUMBER 4
+#define SEQUENCE { 0, 1, 2, 3 } // LRGB
 
 void blinkLEDs()
 {
-    uint32_t id = DEVICE_ID;
-    for(uint32_t led_count = 0; led_count < LED_NUMBER; led_count++)
-    {
-        uint32_t blink_count = id%10;
-        id /= 10;
-        
-        if(blink_count == 0) { // no blink
-            nrf_delay_ms(PAUSE_MS);
-            continue;
+    uint8_t sequence[] = SEQUENCE;
+    uint8_t counter = 0;
+    while(gpio_button_is_pressed()){
+        for(; counter < NRFX_ARRAY_SIZE(sequence); counter++){
+            switch(sequence[counter]){
+                case 0:
+                    gpio_led_turn_on(LED_1);
+                    delay_with_button_check(PAUSE_MS);
+                    gpio_led_turn_off(LED_1);
+                    break;
+                case 1:
+                    gpio_led_turn_on(LED_2);
+                    delay_with_button_check(PAUSE_MS);
+                    gpio_led_turn_off(LED_2);
+                    break;
+                case 2:
+                    gpio_led_turn_on(LED_3);
+                    delay_with_button_check(PAUSE_MS);
+                    gpio_led_turn_off(LED_3);
+                    break;
+                case 3:
+                    gpio_led_turn_on(LED_4);
+                    delay_with_button_check(PAUSE_MS);
+                    gpio_led_turn_off(LED_4);
+                    break;
+                default:
+                    break;
+            }
+            while(gpio_button_is_released())
+                nrf_delay_ms(RELEASE_CHECK_INTERVAL);
         }
-
-
-        for (; blink_count > 0; blink_count--)
-        {
-            bsp_board_led_on(led_count);
-            nrf_delay_ms(PAUSE_MS);
-            bsp_board_led_off(led_count);
-            nrf_delay_ms(PAUSE_MS);
-
-        }
-        nrf_delay_ms(5*PAUSE_MS);    
+        counter = counter % NRFX_ARRAY_SIZE(sequence);
     }
+    
 }
 
 int main(void)
 {
     /* Configure board. */
-    bsp_board_init(BSP_INIT_LEDS);
+    initialize_board();
 
     /* Toggle LEDs. */
     while (true)
