@@ -4,7 +4,7 @@
 #include "nrf_delay.h"
 
 #define PAUSE_MS 100
-#define RELEASE_CHECK_INTERVAL 10
+#define RELEASE_CHECK_INTERVAL_MS 10
 #define MILLISECOND 1
 /***
  * @brief This function is a custom delay function
