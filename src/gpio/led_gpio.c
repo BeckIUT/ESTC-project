@@ -14,6 +14,7 @@
 #define BUTTON_1       NRF_GPIO_PIN_MAP(1,6)
 #define BUTTON_PULL    NRF_GPIO_PIN_PULLUP
 
+
 void initialize_board(void)
 {
     nrf_gpio_cfg_output(LED_1); // LED_1 Green
@@ -40,7 +41,8 @@ void gpio_led_turn_off(uint32_t led_id)
 void gpio_led_toggle(uint32_t led_id)
 {
     gpio_led_turn_on(led_id);
-    delay_with_button_check(PAUSE_MS);
+    delay_with_pwm_button(PAUSE_MS, led_id); // send T_ON time here
+    // delay_with_button_check(PAUSE_MS);
     gpio_led_turn_off(led_id);
 }
 
