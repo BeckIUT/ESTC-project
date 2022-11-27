@@ -1,19 +1,12 @@
 #include "led_gpio.h"
+#include "../pwm/pwm.h"
 #include "../utils/delay.h"
-
 /**
  * Output PIN is configured NO PULL resistor
  * Hence its STATE is ACTIVE LOW
 */
 #define LED_ON         0
 #define LED_OFF        1
-// There is only one button for the application
-// as the second button is used for a RESET.
-#define BUTTONS_NUMBER 1
-
-#define BUTTON_1       NRF_GPIO_PIN_MAP(1,6)
-#define BUTTON_PULL    NRF_GPIO_PIN_PULLUP
-
 
 void initialize_board(void)
 {
@@ -41,7 +34,7 @@ void gpio_led_turn_off(uint32_t led_id)
 void gpio_led_toggle(uint32_t led_id)
 {
     gpio_led_turn_on(led_id);
-    delay_with_pwm_button(PAUSE_MS, led_id); // send T_ON time here
+    delay_with_pwm(led_id); // function returns after a PWM cycle
     // delay_with_button_check(PAUSE_MS);
     gpio_led_turn_off(led_id);
 }

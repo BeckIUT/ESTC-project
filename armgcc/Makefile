@@ -31,9 +31,16 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/strerror/nrf_strerror.c \
   $(SDK_ROOT)/modules/nrfx/soc/nrfx_atomic.c \
   $(PROJ_DIR)/main.c \
+  $(SDK_ROOT)/modules/nrfx/mdk/system_nrf52840.c \
   $(PROJ_DIR)/src/gpio/led_gpio.c \
   $(PROJ_DIR)/src/utils/delay.c \
-  $(SDK_ROOT)/modules/nrfx/mdk/system_nrf52840.c \
+  $(PROJ_DIR)/src/gpiote/gpiote.c \
+  $(PROJ_DIR)/src/pwm/pwm.c \
+  $(SDK_ROOT)/components/libraries/timer/app_timer2.c \
+  $(SDK_ROOT)/components/libraries/timer/drv_rtc.c \
+  $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_gpiote.c \
+  $(SDK_ROOT)/components/libraries/atomic_fifo/nrf_atfifo.c \
+  $(SDK_ROOT)/components/libraries/sortlist/nrf_sortlist.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \
@@ -60,6 +67,10 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/memobj \
   $(SDK_ROOT)/external/fprintf \
   $(SDK_ROOT)/components/libraries/log/src \
+  $(SDK_ROOT)/modules/nrfx/drivers/include \
+  $(SDK_ROOT)/components/libraries/timer \
+  $(SDK_ROOT)/components/libraries/atomic_fifo \
+  $(SDK_ROOT)/components/libraries/sortlist \
 
 # Libraries common to all targets
 LIB_FILES += \
@@ -84,6 +95,8 @@ CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 # keep every function in a separate section, this allows linker to discard unused ones
 CFLAGS += -ffunction-sections -fdata-sections -fno-strict-aliasing
 CFLAGS += -fno-builtin -fshort-enums
+CFLAGS += -DAPP_TIMER_V2
+CFLAGS += -DAPP_TIMER_V2_RTC1_ENABLED
 
 # C++ flags common to all targets
 CXXFLAGS += $(OPT)
@@ -98,6 +111,7 @@ ASMFLAGS += -DCONFIG_GPIO_AS_PINRESET
 ASMFLAGS += -DFLOAT_ABI_HARD
 ASMFLAGS += -DMBR_PRESENT
 ASMFLAGS += -DNRF52840_XXAA
+# ASMFLAGS += -DAPP_TIMER_V2_RTC1_ENABLED
 
 # Linker flags
 LDFLAGS += $(OPT)

@@ -1,5 +1,5 @@
-#ifndef _LED_GPIO_H__
-#define _LED_GPIO_H__
+#ifndef LED_GPIO_H__
+#define LED_GPIO_H__
 
 #include "nrf_gpio.h"
 
@@ -16,6 +16,13 @@
 #define LED_2          LED2_R
 #define LED_3          LED2_G
 #define LED_4          LED2_B
+
+// There is only one button for the application
+// as the second button is used for a RESET.
+#define BUTTONS_NUMBER 1
+
+#define BUTTON_1       NRF_GPIO_PIN_MAP(1,6)
+#define BUTTON_PULL    NRF_GPIO_PIN_PULLUP
 
 /****
  * @brief: Initialize LED as output pins and button as an input pin

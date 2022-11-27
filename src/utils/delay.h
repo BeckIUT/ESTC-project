@@ -1,9 +1,9 @@
-#ifndef _DELAY_H__
-#define _DELAY_H__
+#ifndef DELAY_H__
+#define DELAY_H__
 
 #include "nrf_delay.h"
 
-#define PAUSE_MS 100
+#define PAUSE_MS 1
 #define RELEASE_CHECK_INTERVAL_MS 10
 #define MILLISECOND 1
 /***
@@ -14,14 +14,4 @@
  * @returns: void
 */
 void delay_with_button_check(uint32_t ms_time);
-/***
- * @brief This function is a custom delay function
- * @details Function checks if BUTTON is released every millisecond,
- *  if released delay function will buy time until BUTTON is pressed again
- *  additionally PWM is added
- * @param: uint32_t delay time in milliseconds
- * @param: uint32_t led_id is currect LED
- * @returns: void
-*/
-void delay_with_pwm_button(uint32_t ms_time, uint32_t led_id);
 #endif
