@@ -1,3 +1,4 @@
+#include "nrf_drv_clock.h"
 #include "gpiote.h"
 #include "../gpio/led_gpio.h"
 
@@ -28,15 +29,22 @@ void button_toggle_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
     * when debouncing timer expires reset counter and check press/release
     */
    if(bounce_counter == 0){
-        app_timer_start(debouncing_timer_id, APP_TIMER_TICKS(10), NULL);
+        app_timer_start(debouncing_timer_id, APP_TIMER_TICKS(50), NULL);
         if(pressed_count == 0) // toggle will be reset if no double click detected in the handler
-            app_timer_start(double_click_timer_id, APP_TIMER_TICKS(400), NULL);
+            app_timer_start(double_click_timer_id, APP_TIMER_TICKS(500), NULL);
     }
     bounce_counter++;
 }
 
+static void lfclk_init(void)
+{
+    APP_ERROR_CHECK(nrf_drv_clock_init());
+    nrf_drv_clock_lfclk_request(NULL);
+}
+
 void timer_init(void)
 {
+    lfclk_init();
     ret_code_t err_code;
     err_code = app_timer_init();
     APP_ERROR_CHECK(err_code);
