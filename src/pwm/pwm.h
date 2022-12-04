@@ -3,11 +3,6 @@
 
 #include "nrf_delay.h"
 
-#define FREQUENCY 1 // kHz, so t_on is in ms
-#define DUTY_CYCLE_STEP 1 // [0:DUTY_MAX/STEP]
-#define DUTY_MIN 0 // time in microseconds
-#define DUTY_MAX 1000 // time in microseconds, max value differs depending on PERIOD
-
 /***
  * @brief This function is a custom delay function
  * @details Function runs full PWM cycle 0 -> 100 -> 0

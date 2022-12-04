@@ -6,7 +6,7 @@ DFU_PORT         ?= /dev/ttyACM0
 
 
 SDK_ROOT ?= ../../../esl-nsdk
-PROJ_DIR ?= ../
+PROJ_DIR := ../
 
 $(OUTPUT_DIRECTORY)/nrf52840_xxaa.out: \
   LINKER_SCRIPT  := blinky_gcc_nrf52.ld
@@ -42,7 +42,7 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/atomic_fifo/nrf_atfifo.c \
   $(SDK_ROOT)/components/libraries/sortlist/nrf_sortlist.c \
   $(SDK_ROOT)/integration/nrfx/legacy/nrf_drv_clock.c \
-  # $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_clock.c \
+  $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_clock.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \

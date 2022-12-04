@@ -3161,12 +3161,16 @@
 #define NRFX_GPIOTE_CONFIG_IRQ_PRIORITY 6
 #endif
 
+
 // <e> NRFX_CLOCK_ENABLED - nrfx_clock - CLOCK peripheral driver
 //==========================================================
 #ifndef NRFX_CLOCK_ENABLED
 #define NRFX_CLOCK_ENABLED 1
 #endif
 
+#ifndef NRF_CLOCK_ENABLED
+#define NRF_CLOCK_ENABLED 1
+#endif
 // <o> NRFX_CLOCK_CONFIG_IRQ_PRIORITY  - Interrupt priority
  
 // <0=> 0 (highest) 
@@ -3190,4 +3194,11 @@
 
 #ifndef NRFX_CLOCK_CONFIG_LF_SRC
 #define NRFX_CLOCK_CONFIG_LF_SRC 1
+#endif
+
+// <q> NRFX_SYSTICK_ENABLED  - nrfx_systick - ARM(R) SysTick driver
+
+
+#ifndef NRFX_SYSTICK_ENABLED
+#define NRFX_SYSTICK_ENABLED 1
 #endif

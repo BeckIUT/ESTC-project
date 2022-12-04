@@ -4,8 +4,9 @@
 #include "nrfx_gpiote.h"
 #include "app_timer.h"
 
-volatile bool double_click_toggle_flag;
-
+volatile bool double_click_toggle_flag; // create separate flag for PWM,
+// and use main.c to communicate flags between modules
+// main.c get gpiote flag --> set pwm flag
 /**
  * @brief GPIOTE function to initialize Tasks & Events
  * Uses BUTTON pin as GPIO IN

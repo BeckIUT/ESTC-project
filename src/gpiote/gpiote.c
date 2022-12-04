@@ -2,6 +2,11 @@
 #include "gpiote.h"
 #include "../gpio/led_gpio.h"
 
+#define DEBOUNCE_TIMER      50
+#define DOUBLE_CLICK_TIMER  500
+#define DOUBLE_CLICK        2
+#define RESET               0
+
 static uint32_t bounce_counter = 0;
 static uint32_t pressed_count = 0;
 
@@ -24,14 +29,15 @@ void gpiote_init(void)
 
 void button_toggle_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
-    /* if bounce counter == 0 start timer, debouncing cases will be
-    * recorded in counter and checked for being odd
-    * when debouncing timer expires reset counter and check press/release
+    /**
+     *  if bounce counter == 0 start timer, debouncing cases will be recorded in counter
+     * when debouncing timer expires reset counter 
+     * and check press/release with pin check
     */
-   if(bounce_counter == 0){
-        app_timer_start(debouncing_timer_id, APP_TIMER_TICKS(50), NULL);
-        if(pressed_count == 0) // toggle will be reset if no double click detected in the handler
-            app_timer_start(double_click_timer_id, APP_TIMER_TICKS(500), NULL);
+   if(bounce_counter == RESET){
+        app_timer_start(debouncing_timer_id, APP_TIMER_TICKS(DEBOUNCE_TIMER), NULL);
+        if(pressed_count == RESET) // toggle will be reset if no double click detected in the handler
+            app_timer_start(double_click_timer_id, APP_TIMER_TICKS(DOUBLE_CLICK_TIMER), NULL);
     }
     bounce_counter++;
 }
@@ -62,12 +68,12 @@ void debounce_timer_handler(void * p_context)
 {
     if(gpio_button_is_pressed())
         pressed_count++;
-    bounce_counter = 0; // counter is not incremented every bounce during timer period
+    bounce_counter = RESET; // reset counter for next timer
 }
 
 void double_click_timer_handler(void * p_context)
 {
-    if(pressed_count % 2 == 0)
+    if(pressed_count == DOUBLE_CLICK) // now long press does not affect double click
         double_click_toggle_flag = !double_click_toggle_flag;
-    pressed_count = 0;
+    pressed_count = RESET;
 }
